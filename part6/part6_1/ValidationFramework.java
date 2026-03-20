@@ -85,10 +85,31 @@ public class ValidationFramework {
          *   6. Верните errors.
          */
         public static List<String> validate(Object obj) {
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
+
             List<String> errors = new ArrayList<>();
-            // TODO: getDeclaredFields(), setAccessible(true), проверьте @NotEmpty и @Range
-            return errors;
+            for (Field field : obj.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                try {
+                    if (field.isAnnotationPresent(NotEmpty.class)) {
+                        String s = (String) field.get(obj);
+                        NotEmpty ann = field.getAnnotation(NotEmpty.class);
+                        if (s == null || s.isEmpty()) {
+                            errors.add(ann.message());
+                        }
+                    }
+                    if (field.isAnnotationPresent(Range.class)) {
+                        int v = field.getInt(obj);
+                        Range ann = field.getAnnotation(Range.class);
+                        if (v < ann.min() || v > ann.max()) {
+                            errors.add(ann.message());
+                        }
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            // ▼ ВАШ КОД ЗДЕСЬ ▼
+            return new ArrayList<>();//???????????
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
     }

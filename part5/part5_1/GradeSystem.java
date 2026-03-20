@@ -138,7 +138,35 @@ public class GradeSystem {
         // TODO: Подсчитайте средний GPA всех студентов
 
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-
+        Student[] students = {
+                new Student("Анна", 1),
+                new Student("Борис", 2),
+                new Student("Вера", 3),
+                new Student("Глеб", 4),
+                new Student("Дмитрий", 5),
+                new Student("Елена", 6),
+                new Student("ваш имя???", 7)
+        };
+        int[] scores = {95, 82, 71, 58, 88, 90, 65};
+        var gradeMap = new EnumMap<Grade, List<Student>>(Grade.class);
+        double gpaSum = 0;
+        for (int i = 0; i < students.length; i++) {
+            Grade g = Grade.fromScore(scores[i]);
+            gradeMap.computeIfAbsent(g, k -> new ArrayList<>()).add(students[i]);
+            gpaSum += g.getGpaValue();
+        }
+        var passingGrades = EnumSet.of(Grade.A, Grade.B, Grade.C);
+        System.out.println("=== Студенты по оценкам (проходные: A, B, C) ===");
+        for (Grade g : Grade.values()) {
+            List<Student> list = gradeMap.get(g);
+            if (list == null || list.isEmpty()) {
+                continue;
+            }
+            System.out.println(g + " (" + g.getDescription() + "): " +
+                    list.stream().map(Student::name).toList());
+        }
+        System.out.println("\nПроходные категории EnumSet: " + passingGrades);
+        System.out.printf("Средний GPA по выборке: %.2f%n", gpaSum / students.length);
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 }

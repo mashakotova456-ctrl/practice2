@@ -1,7 +1,8 @@
 package part8.part8_1;
 
+import java.time.Year;
 import java.util.*;
-import java.util.stream.*;
+import java.util.stream.Collectors;
 
 /**
  * Задание 8.1 — Система управления библиотекой (интеграционное задание)
@@ -45,7 +46,8 @@ public class LibrarySystem {
         /** Возвращает русское название жанра. */
         public String getRussianName() {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return null; // TODO: верните russianName
+return "";
+
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
 
@@ -56,9 +58,12 @@ public class LibrarySystem {
          * Если не найден — выбросите IllegalArgumentException.
          */
         public static Genre fromString(String name) {
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
-            throw new UnsupportedOperationException("TODO: пройдите по values(), сравните russianName, верните найденный жанр");
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+            for (Genre g : values()) {
+                if (g.russianName.equals(name)) {
+                    return g;
+                }
+            }
+            throw new IllegalArgumentException("Неизвестный жанр: " + name);
         }
     }
 
@@ -75,6 +80,19 @@ public class LibrarySystem {
     record Book(String title, String author, int year, Genre genre, double price) {
         Book {
             // TODO: добавьте проверки, выбросите IllegalArgumentException при нарушении
+            if (title == null || title.isBlank()) {
+                throw new IllegalArgumentException("Название не может быть пустым");
+            }
+            if (author == null || author.isBlank()) {
+                throw new IllegalArgumentException("Автор не может быть пустым");
+            }
+            int maxYear = Year.now().getValue();
+            if (year < 1450 || year > maxYear) {
+                throw new IllegalArgumentException("Год издания вне допустимого диапазона");
+            }
+            if (price < 0) {
+                throw new IllegalArgumentException("Цена не может быть отрицательной");
+            }
         }
     }
 
@@ -100,9 +118,8 @@ public class LibrarySystem {
     record PhysicalBook(Book book, String shelf) implements LibraryItem {
         @Override
         public String getInfo() {
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return ""; // TODO: верните "[Полка " + shelf + "] " + book.title() + " — " + book.author()
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+            return "[Полка " + shelf + "] " + book.title() + " — " + book.author();
+
         }
     }
 
@@ -115,9 +132,8 @@ public class LibrarySystem {
     record EBook(Book book, String format, double sizeMB) implements LibraryItem {
         @Override
         public String getInfo() {
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return ""; // TODO: верните "[" + format + ", " + sizeMB + " МБ] " + book.title() + " -- " + book.author()
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+            return "[" + format + ", " + sizeMB + " МБ] " + book.title() + " — " + book.author();
+
         }
     }
 
@@ -132,7 +148,7 @@ public class LibrarySystem {
         /** Добавляет элемент в библиотеку. */
         public void add(LibraryItem item) {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-
+            items.add(item);
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
 
@@ -160,9 +176,12 @@ public class LibrarySystem {
          *   items.stream().collect(Collectors.groupingBy(i -> i.book().genre(), () -> new EnumMap<>(Genre.class), Collectors.toList()));
          */
         public Map<Genre, List<LibraryItem>> groupByGenre() {
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return new java.util.EnumMap<>(Genre.class); // TODO: используйте stream().collect(Collectors.groupingBy(...))
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+
+            return items.stream().collect(Collectors.groupingBy(
+                    i -> i.book().genre(),
+                    () -> new EnumMap<>(Genre.class),
+                    Collectors.toList()));
+
         }
 
         /**
@@ -173,7 +192,7 @@ public class LibrarySystem {
          */
         public double totalValue() {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return 0; // TODO: верните items.stream().mapToDouble(i -> i.book().price()).sum()
+return 0.0;
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
 
@@ -185,8 +204,8 @@ public class LibrarySystem {
          */
         public Optional<Book> mostExpensive() {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return Optional.empty(); // TODO: items.stream().map(LibraryItem::book).max(Comparator.comparingDouble(Book::price))
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+return null;
+           // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
 
         /**
@@ -197,7 +216,13 @@ public class LibrarySystem {
          */
         public List<String> authorsByGenre(Genre genre) {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return List.of(); // TODO: используйте stream().map().filter().map().distinct().sorted().collect()
+            return items.stream()
+                    .map(LibraryItem::book)
+                    .filter(b -> b.genre() == genre)
+                    .map(Book::author)
+                    .distinct()
+                    .sorted()
+                    .collect(Collectors.toList());
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
     }
@@ -224,8 +249,28 @@ public class LibrarySystem {
         //
         // System.out.println("\nАвторы программирования: " + lib.authorsByGenre(Genre.PROGRAMMING));
 
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
 
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        lib.add(new PhysicalBook(new Book("Война и мир", "Толстой", 1869, Genre.FICTION, 800), "A-12"));
+        lib.add(new PhysicalBook(new Book("История России", "Соловьёв", 1851, Genre.HISTORY, 1200), "H-3"));
+        lib.add(new EBook(new Book("Clean Code", "Мартин", 2008, Genre.PROGRAMMING, 1500), "PDF", 5.2));
+        lib.add(new EBook(new Book("Effective Java", "Блох", 2018, Genre.PROGRAMMING, 2200), "EPUB", 3.1));
+        lib.add(new PhysicalBook(new Book("Краткая история времени", "Хокинг", 1988, Genre.SCIENCE, 950), "S-7"));
+        lib.add(new EBook(new Book("Искусство войны", "Сунь-цзы", 2000, Genre.ART, 400), "PDF", 1.0));
+        lib.add(new PhysicalBook(new Book("Преступление и наказание", "Достоевский", 1866, Genre.FICTION, 700), "A-5"));
+        lib.add(new EBook(new Book("Sapiens", "Харари", 2014, Genre.HISTORY, 1100), "MOBI", 8.0));
+
+        System.out.println("=== Каталог ===");
+        lib.printCatalog();
+
+        System.out.println("\n=== По жанрам ===");
+        lib.groupByGenre().forEach((g, list) ->
+                System.out.println(g.getRussianName() + ": " + list.size() + " элемент(ов)"));
+
+        System.out.printf("%nОбщая стоимость: %.2f руб.%n", lib.totalValue());
+
+        lib.mostExpensive().ifPresent(b -> System.out.println("Самая дорогая: " + b));
+
+        System.out.println("\nАвторы программирования: " + lib.authorsByGenre(Genre.PROGRAMMING));
+
     }
 }

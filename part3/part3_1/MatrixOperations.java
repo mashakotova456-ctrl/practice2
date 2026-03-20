@@ -49,7 +49,12 @@ public class MatrixOperations {
      */
     public static void print(int[][] matrix) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-
+        for (int[] row : matrix) {
+            for (int v : row) {
+                System.out.printf("%4d", v);
+            }
+            System.out.println();
+        }
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
@@ -62,9 +67,16 @@ public class MatrixOperations {
      *   3. Заполните: result[j][i] = matrix[i][j];
      */
     public static int[][] transpose(int[][] matrix) {
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return null; // TODO: создайте result[cols][rows], заполните result[j][i] = matrix[i][j]
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] result = new int[cols][rows];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result[j][i] = matrix[i][j];
+            }
+        }
+        return result;
+
     }
 
     /**
@@ -77,9 +89,22 @@ public class MatrixOperations {
      *   3. Тройной цикл (i, j, k): result[i][j] += a[i][k] * b[k][j];
      */
     public static int[][] multiply(int[][] a, int[][] b) {
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return null; // TODO: проверьте совместимость, тройной цикл (i,j,k), result[i][j] += a[i][k] * b[k][j]
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        if (a[0].length != b.length) {
+            System.out.println("Ошибка: несовместимые размеры матриц");
+            return null;
+        }
+        int m = a.length;
+        int n = b[0].length;
+        int p = b.length;
+        int[][] result = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < p; k++) {
+                    result[i][j] += a[i][k] * b[k][j];
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -88,9 +113,13 @@ public class MatrixOperations {
      * Подсказка: один цикл: sum += matrix[i][i];
      */
     public static int diagonalSum(int[][] matrix) {
+        int sum = 0;
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: один цикл: sum += matrix[i][i]
+       // for (int i = 0; i < ?; i++) {
+       //     sum += matrix[?][?];
+        //}
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        return sum;
     }
 
     // === Метод main (дан — НЕ ИЗМЕНЯЙТЕ) ===

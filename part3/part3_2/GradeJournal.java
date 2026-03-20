@@ -75,17 +75,20 @@ public class GradeJournal {
         System.out.println("=== Журнал оценок ===");
 
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-
-        // Шаг 1: для каждого студента выведите строку в формате:
-        //   Алиса   | Оценок: 5 | Средний: 4.40 | Мин: 3 | Макс: 5
-        // Подсказка: for (int i = 0; i < names.length; i++) {
-        //     System.out.printf("%-8s| Оценок: %d | Средний: %.2f | Мин: %d | Макс: %d%n",
-        //         names[i], grades[i].length, average(grades[i]), min(grades[i]), max(grades[i]));
-        // }
-
-        // Шаг 2: найдите студента с наивысшим средним баллом
-        // TODO: пройдите циклом, сравните average(grades[i]) с текущим максимумом
-        // Выведите: System.out.printf("\nЛучший студент: %s (средний балл: %.2f)%n", bestName, bestAvg);
+        for (int i = 0; i < names.length; i++) {
+            System.out.printf("%-8s| Оценок: %d | Средний: %.2f | Мин: %d | Макс: %d%n",
+                    names[i], grades[i].length, average(grades[i]), min(grades[i]), max(grades[i]));
+        }
+        String bestName = names[0];
+        double bestAvg = average(grades[0]);
+        for (int i = 1; i < names.length; i++) {
+            double avg = average(grades[i]);
+            if (avg > bestAvg) {
+                bestAvg = avg;
+                bestName = names[i];
+            }
+        }
+        System.out.printf("%nЛучший студент: %s (средний балл: %.2f)%n", bestName, bestAvg);
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 }

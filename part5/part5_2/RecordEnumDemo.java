@@ -34,7 +34,7 @@ public class RecordEnumDemo {
         enum Unit { CELSIUS, FAHRENHEIT, KELVIN }
 
         Temperature {
-            // TODO: переведите value в Кельвины и проверьте >= 0
+            // TODO: переведите value в kelvin и проверьте >= 0
             // Алгоритм:
             //   1. Вычислите double kelvin = switch (unit) {
             //        case CELSIUS    -> value + 273.15;
@@ -56,7 +56,17 @@ public class RecordEnumDemo {
          */
         public Temperature convertTo(Unit targetUnit) {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return this; // TODO: переведите в Цельсий, затем в targetUnit; верните new Temperature(result, targetUnit)
+            double celsius = switch (unit) {
+                case CELSIUS -> value;
+                case FAHRENHEIT -> (value - 32) * 5.0 / 9.0;
+                case KELVIN -> value - 273.15;
+            };
+            double result = switch (targetUnit) {
+                case CELSIUS -> celsius;
+                case FAHRENHEIT -> celsius * 9.0 / 5.0 + 32;
+                case KELVIN -> celsius + 273.15;
+            };
+            return new Temperature(result, targetUnit);
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
 
@@ -68,7 +78,12 @@ public class RecordEnumDemo {
         @Override
         public String toString() {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return ""; // TODO: String.format("%.2f %s", value, switch(unit){CELSIUS->"°C"; FAHRENHEIT->"°F"; KELVIN->"K";})
+            String suffix = switch (unit) {
+                case CELSIUS -> "°C";
+                case FAHRENHEIT -> "°F";
+                case KELVIN -> "K";
+            };
+            return String.format("%.2f %s", value, suffix);
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
     }

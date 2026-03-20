@@ -56,9 +56,15 @@ public class TextAnalyzer {
      * пройдите циклом, сравнивая длины.
      */
     public String longestWord() {
+
+        String[] words = text.split(" ");
+        String best = words[0];
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return ""; // TODO: split(" "), пройдите циклом, сравнивая длины
+
+
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        return best;
+
     }
 
     /**
@@ -69,9 +75,16 @@ public class TextAnalyzer {
      * добавляйте слова от последнего к первому.
      */
     public String reverseWords() {
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return ""; // TODO: split(" "), StringBuilder, добавляйте слова от последнего к первому
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        String[] words = text.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = words.length - 1; i >= 0; i--) {
+            if (i < words.length - 1) {
+                sb.append(' ');
+            }
+            sb.append(words[i]);
+        }
+        return sb.toString();
+
     }
 
     /**
@@ -84,7 +97,16 @@ public class TextAnalyzer {
      */
     public int countOccurrences(String target) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: toLowerCase(), indexOf() в цикле, считайте совпадения
+        String lower = text.toLowerCase();
+        String t = target.toLowerCase();
+        int count = 0;
+        int from = 0;
+        int idx;
+        while ((idx = lower.indexOf(t, from)) != -1) {
+            count++;
+            from = idx + 1;
+        }
+        return 0; // ???
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
@@ -97,9 +119,10 @@ public class TextAnalyzer {
      *   3. Сравните с реверсом: new StringBuilder(clean).reverse().toString()
      */
     public boolean isPalindrome() {
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return false; // TODO: replaceAll("[^a-zA-Zа-яА-ЯёЁ]",""), toLowerCase(), сравните с reverse()
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+
+        String clean = text.replaceAll("[^a-zA-Zа-яА-ЯёЁ]", "").toLowerCase();
+        return clean.contentEquals(new StringBuilder(clean).reverse());
+
     }
 
     @Override
