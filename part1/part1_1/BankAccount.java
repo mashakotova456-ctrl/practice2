@@ -46,6 +46,7 @@ public class BankAccount {
         // TODO: totalAccounts++; выведите "Создание счёта #" + totalAccounts
         // ▼ ВАШ КОД ЗДЕСЬ ▼
 totalAccounts++;
+        System.out.println("hi");
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
