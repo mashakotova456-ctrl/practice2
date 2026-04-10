@@ -20,18 +20,13 @@ package part2.part2_2;
  */
 public class PaymentProcessor {
 
-    /**
-     * Выводит подробное описание способа оплаты с помощью switch.
-     *
-     * Алгоритм: используйте switch с паттерн-матчингом.
-     * Для каждого типа выведите специфическую информацию
-     * (держатель карты, название банка, адрес кошелька и т.д.).
-     *
-     * @param pm способ оплаты
-     */
     public static void describe(PaymentMethod pm) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-
+        switch (pm) {
+            case CreditCard cc -> System.out.println("Карта: " + cc.holder() + " ****" + cc.cardNumber().substring(cc.cardNumber().length() - 4));
+            case BankTransfer bt -> System.out.println("Банк: " + bt.bankName() + ", IBAN: " + bt.iban());
+            case CryptoWallet cw -> System.out.println("Крипто: " + cw.currency() + ", Адрес: " + cw.address());
+        }
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 }

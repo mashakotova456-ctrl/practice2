@@ -26,111 +26,83 @@ package part4.part4_1;
  * Текст: А роза упала на лапу Азора
  * Палиндром: true
  */
+
+
 public class TextAnalyzer {
+    private String text;
 
-    /** Исходный текст для анализа. */
-    private final String text;
-
-    /**
-     * Присвойте параметр полю text (поле final — иначе класс не скомпилируется).
-     */
     public TextAnalyzer(String text) {
+        // ▼ ВАШ КОД ЗДЕСЬ ▼
         this.text = text;
+        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
-    /**
-     * Возвращает количество слов (разделённых пробелами).
-     *
-     * Подсказка: return text.split(" ").length;
-     */
     public int wordCount() {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: верните text.split(" ").length
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
-    }
-
-    /**
-     * Возвращает самое длинное слово.
-     *
-     * Подсказка: разбейте на слова через split(" "),
-     * пройдите циклом, сравнивая длины.
-     */
-    public String longestWord() {
-
-        String[] words = text.split(" ");
-        String best = words[0];
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-
-
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
-        return best;
-
-    }
-
-    /**
-     * Возвращает текст с обратным порядком слов (не букв!).
-     * Пример: "Привет мир" → "мир Привет"
-     *
-     * Подсказка: split(" "), создайте StringBuilder,
-     * добавляйте слова от последнего к первому.
-     */
-    public String reverseWords() {
-        String[] words = text.split(" ");
-        StringBuilder sb = new StringBuilder();
-        for (int i = words.length - 1; i >= 0; i--) {
-            if (i < words.length - 1) {
-                sb.append(' ');
-            }
-            sb.append(words[i]);
+        if (text == null || text.trim().isEmpty()) {
+            return 0;
         }
-        return sb.toString();
-
+        return text.trim().split("\\s+").length;
+        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
-    /**
-     * Считает, сколько раз подстрока встречается в тексте (без учёта регистра).
-     *
-     * Алгоритм:
-     *   1. Приведите оба текста к нижнему регистру: toLowerCase().
-     *   2. В цикле ищите: index = lower.indexOf(targetLower, fromIndex).
-     *   3. Пока index != -1: увеличьте счётчик, сдвиньте fromIndex = index + 1.
-     */
+    public String longestWord() {
+        // ▼ ВАШ КОД ЗДЕСЬ ▼
+        String[] words = text.split("\\s+");
+        String longest = "";
+
+        for (String word : words) {
+            if (word.length() > longest.length()) {
+                longest = word;
+            }
+        }
+        return longest;
+        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+    }
+
+    public String reverseWords() {
+        // ▼ ВАШ КОД ЗДЕСЬ ▼
+        String[] words = text.split("\\s+");
+        StringBuilder result = new StringBuilder();
+
+        for (int i = words.length - 1; i >= 0; i--) {
+            result.append(words[i]);
+            if (i > 0) {
+                result.append(" ");
+            }
+        }
+        return result.toString();
+        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+    }
+
     public int countOccurrences(String target) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        String lower = text.toLowerCase();
-        String t = target.toLowerCase();
+        String lowerText = text.toLowerCase();
+        String lowerTarget = target.toLowerCase();
+
         int count = 0;
-        int from = 0;
-        int idx;
-        while ((idx = lower.indexOf(t, from)) != -1) {
+        int index = 0;
+
+        while ((index = lowerText.indexOf(lowerTarget, index)) != -1) {
             count++;
-            from = idx + 1;
+            index += lowerTarget.length();
         }
-        return 0; // ???
+        return count;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
-    /**
-     * Проверяет, является ли текст палиндромом.
-     *
-     * Алгоритм:
-     *   1. Удалите всё кроме букв: replaceAll("[^a-zA-Zа-яА-ЯёЁ]", "")
-     *   2. Приведите к нижнему регистру.
-     *   3. Сравните с реверсом: new StringBuilder(clean).reverse().toString()
-     */
     public boolean isPalindrome() {
-
-        String clean = text.replaceAll("[^a-zA-Zа-яА-ЯёЁ]", "").toLowerCase();
-        return clean.contentEquals(new StringBuilder(clean).reverse());
-
+        // ▼ ВАШ КОД ЗДЕСЬ ▼
+        String cleaned = text.replaceAll("[^a-zA-Zа-яА-ЯёЁ]", "").toLowerCase();
+        String reversed = new StringBuilder(cleaned).reverse().toString();
+        return cleaned.equals(reversed);
+        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
     @Override
     public String toString() {
         return text;
     }
-
-    // === Метод main (дан — НЕ ИЗМЕНЯЙТЕ) ===
 
     public static void main(String[] args) {
         TextAnalyzer ta = new TextAnalyzer("Java Programming is Fun and Java is Powerful");

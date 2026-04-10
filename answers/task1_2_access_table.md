@@ -17,13 +17,13 @@
 
 Для каждой строки (A–H) из `HRSystem.java` укажите:
 
-| Строка | Обращаемый член | Модификатор | Компилируется? (да/нет) | Причина |
-|--------|----------------|-------------|:-----------------------:|---------|
-| A | `emp.name` | | | |
-| B | `emp.age` | | | |
-| C | `emp.salary` | | | |
-| D | `emp.password` | | | |
-| E | `emp.getRole()` | | | |
-| F | `emp.promote(5000)` | | | |
-| G | `emp.printSummary()` | | | |
-| H | `emp.validatePassword("secret")` | | | |
+| Строка | Обращаемый член | Модификатор | Компилируется? | Причина |
+|--------|----------------|-------------|:--------------:|---------|
+| A | `emp.name` | *(пакетный)* | нет | Доступ только внутри пакета `company.core`; `HRSystem` находится в другом пакете |
+| B | `emp.age` | `private` | нет | `private` виден только внутри класса `Employee` |
+| C | `emp.salary` | `protected` | нет | `protected` в другом пакете доступен только наследникам, а `HRSystem` не наследует `Employee` |
+| D | `emp.password` | `private` | нет | `private` виден только внутри класса `Employee` |
+| E | `emp.getRole()` | `public` | да | `public` доступен из любого пакета и класса |
+| F | `emp.promote(5000)` | `protected` | нет | `protected` в другом пакете работает только для наследников |
+| G | `emp.printSummary()` | `public` | да | `public` доступен отовсюду |
+| H | `emp.validatePassword("secret")` | `private` | нет | `private` виден только внутри класса `Employee` |

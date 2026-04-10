@@ -8,28 +8,17 @@ package part2.part2_2;
  */
 public record CryptoWallet(String address, String currency) implements PaymentMethod {
 
-    /**
-     * "Криптоплатёж (BTC): 10000.0 руб."
-     *
-     * Подсказка:
-     * return "Криптоплатёж (" + currency + "): " + amount + " руб.";
-     */
     @Override
     public String process(double amount) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return ""; // TODO: верните "Криптоплатёж (" + currency + "): " + amount + " руб."
+        return "Криптоплатёж (" + currency + "): " + amount + " руб.";
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
-    /**
-     * Комиссия = 1.5% от суммы.
-     *
-     * Подсказка: return amount * 0.015;
-     */
     @Override
     public double fee(double amount) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: верните amount * 0.015
+        return amount * 0.015;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 }

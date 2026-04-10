@@ -29,7 +29,6 @@ import java.util.List;
 public class ValidationFramework {
 
     // === Аннотация @NotEmpty ===
-
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
     @interface NotEmpty {
@@ -37,7 +36,6 @@ public class ValidationFramework {
     }
 
     // === Аннотация @Range ===
-
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.FIELD)
     @interface Range {
@@ -47,7 +45,6 @@ public class ValidationFramework {
     }
 
     // === Класс с аннотированными полями ===
-
     static class RegistrationForm {
         @NotEmpty(message = "Имя обязательно")
         String name;
@@ -64,7 +61,6 @@ public class ValidationFramework {
             this.age = age;
         }
     }
-
     // === Валидатор ===
 
     static class Validator {
@@ -85,11 +81,12 @@ public class ValidationFramework {
          *   6. Верните errors.
          */
         public static List<String> validate(Object obj) {
-
             List<String> errors = new ArrayList<>();
+
             for (Field field : obj.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 try {
+                    // Проверка @NotEmpty
                     if (field.isAnnotationPresent(NotEmpty.class)) {
                         String s = (String) field.get(obj);
                         NotEmpty ann = field.getAnnotation(NotEmpty.class);
@@ -97,6 +94,7 @@ public class ValidationFramework {
                             errors.add(ann.message());
                         }
                     }
+                    // Проверка @Range
                     if (field.isAnnotationPresent(Range.class)) {
                         int v = field.getInt(obj);
                         Range ann = field.getAnnotation(Range.class);
@@ -108,14 +106,14 @@ public class ValidationFramework {
                     throw new RuntimeException(e);
                 }
             }
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return new ArrayList<>();//???????????
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+            // возвращаем собранные ошибки
+            return errors;
         }
     }
 
-    // === Метод main (дан — НЕ ИЗМЕНЯЙТЕ) ===
 
+
+    // === Метод main ===
     public static void main(String[] args) {
         RegistrationForm valid = new RegistrationForm("Иван", "ivan@mail.ru", 25);
         RegistrationForm invalid = new RegistrationForm("", null, 15);

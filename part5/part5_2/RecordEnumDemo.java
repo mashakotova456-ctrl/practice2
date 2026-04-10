@@ -17,125 +17,101 @@ package part5.part5_2;
  *
  * Как запустить: нажмите ▶ рядом с main.
  */
+
 public class RecordEnumDemo {
 
-    // === Record Temperature ===
+    // Record Temperature
+    public record Temperature(double value, Unit unit) {
 
-    /**
-     * Температура с единицей измерения.
-     *
-     * Задача:
-     *   1. В компактном конструкторе проверьте, что значение не ниже абсолютного нуля.
-     *   2. Реализуйте convertTo() для конверсии между единицами.
-     *   3. Переопределите toString(): "36.6 °C", "97.88 °F", "309.75 K".
-     */
-    record Temperature(double value, Unit unit) {
+        public enum Unit {
+            CELSIUS, FAHRENHEIT, KELVIN
+        }
 
-        enum Unit { CELSIUS, FAHRENHEIT, KELVIN }
-
-        Temperature {
-            // TODO: переведите value в kelvin и проверьте >= 0
-            // Алгоритм:
-            //   1. Вычислите double kelvin = switch (unit) {
-            //        case CELSIUS    -> value + 273.15;
-            //        case FAHRENHEIT -> (value - 32) * 5.0/9.0 + 273.15;
-            //        case KELVIN     -> value;
-            //      };
-            //   2. if (kelvin < 0) throw new IllegalArgumentException("Ниже абсолютного нуля");
+        public Temperature {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
+            // Проверяем абсолютный ноль (0 K = -273.15 °C = -459.67 °F)
+            double kelvin = switch (unit) {
+                case CELSIUS -> value + 273.15;
+                case FAHRENHEIT -> (value - 32) * 5.0/9.0 + 273.15;
+                case KELVIN -> value;
+            };
 
+            if (kelvin < 0) {
+                throw new IllegalArgumentException("Температура не может быть ниже абсолютного нуля");
+            }
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
 
-        /**
-         * Конвертирует температуру в другую единицу.
-         *
-         * Алгоритм:
-         *   1. Переведите текущее значение в Цельсии (промежуточный шаг).
-         *   2. Из Цельсия переведите в целевую единицу.
-         */
         public Temperature convertTo(Unit targetUnit) {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            double celsius = switch (unit) {
-                case CELSIUS -> value;
-                case FAHRENHEIT -> (value - 32) * 5.0 / 9.0;
-                case KELVIN -> value - 273.15;
+            // Сначала переводим в Кельвины
+            double kelvin = switch (unit) {
+                case CELSIUS -> value + 273.15;
+                case FAHRENHEIT -> (value - 32) * 5.0/9.0 + 273.15;
+                case KELVIN -> value;
             };
-            double result = switch (targetUnit) {
-                case CELSIUS -> celsius;
-                case FAHRENHEIT -> celsius * 9.0 / 5.0 + 32;
-                case KELVIN -> celsius + 273.15;
+
+            // Затем переводим из Кельвинов в целевую единицу
+            return switch (targetUnit) {
+                case CELSIUS -> new Temperature(kelvin - 273.15, Unit.CELSIUS);
+                case FAHRENHEIT -> new Temperature(kelvin * 9.0/5.0 - 459.67, Unit.FAHRENHEIT);
+                case KELVIN -> new Temperature(kelvin, Unit.KELVIN);
             };
-            return new Temperature(result, targetUnit);
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
 
-        /**
-         * Формат: "36.60 °C" или "97.88 °F" или "309.75 K".
-         *
-         * Подсказка: switch по unit: CELSIUS → "°C", FAHRENHEIT → "°F", KELVIN → "K".
-         */
         @Override
         public String toString() {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            String suffix = switch (unit) {
-                case CELSIUS -> "°C";
-                case FAHRENHEIT -> "°F";
-                case KELVIN -> "K";
+            return switch (unit) {
+                case CELSIUS -> String.format("%.2f °C", value);
+                case FAHRENHEIT -> String.format("%.2f °F", value);
+                case KELVIN -> String.format("%.2f K", value);
             };
-            return String.format("%.2f %s", value, suffix);
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
     }
 
-    // === Enum MathOperation ===
-
-    /**
-     * Математическая операция с абстрактным методом.
-     *
-     * Синтаксис enum с абстрактным методом:
-     *
-     *     enum MathOperation {
-     *         ADD {
-     *             public double apply(double a, double b) { return a + b; }
-     *         },
-     *         SUBTRACT {
-     *             public double apply(double a, double b) { return a - b; }
-     *         };
-     *         public abstract double apply(double a, double b);
-     *     }
-     */
-    enum MathOperation {
+    // Enum MathOperation
+    public enum MathOperation {
         ADD {
             @Override
             public double apply(double a, double b) {
-                return 0; // TODO: верните a + b
+                // ▼ ВАШ КОД ЗДЕСЬ ▼
+                return a + b;
+                // ▲ КОНЕЦ ВАШЕГО КОДА ▲
             }
         },
         SUBTRACT {
             @Override
             public double apply(double a, double b) {
-                return 0; // TODO: верните a - b
+                // ▼ ВАШ КОД ЗДЕСЬ ▼
+                return a - b;
+                // ▲ КОНЕЦ ВАШЕГО КОДА ▲
             }
         },
         MULTIPLY {
             @Override
             public double apply(double a, double b) {
-                return 0; // TODO: верните a * b
+                // ▼ ВАШ КОД ЗДЕСЬ ▼
+                return a * b;
+                // ▲ КОНЕЦ ВАШЕГО КОДА ▲
             }
         },
         DIVIDE {
             @Override
             public double apply(double a, double b) {
-                // TODO: проверьте b != 0, иначе throw new ArithmeticException("Деление на ноль")
-                return 0; // TODO: верните a / b (с проверкой на ноль)
+                // ▼ ВАШ КОД ЗДЕСЬ ▼
+                if (b == 0) {
+                    throw new ArithmeticException("Деление на ноль");
+                }
+                return a / b;
+                // ▲ КОНЕЦ ВАШЕГО КОДА ▲
             }
         };
 
         public abstract double apply(double a, double b);
     }
-
-    // === Метод main (дан — НЕ ИЗМЕНЯЙТЕ) ===
 
     public static void main(String[] args) {
         Temperature body = new Temperature(36.6, Temperature.Unit.CELSIUS);

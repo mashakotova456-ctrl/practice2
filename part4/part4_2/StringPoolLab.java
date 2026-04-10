@@ -21,65 +21,64 @@ package part4.part4_2;
  *
  * Как запустить: нажмите ▶ рядом с main.
  */
+
 public class StringPoolLab {
-
     public static void main(String[] args) {
-
-        // === Создание строк разными способами ===
-
-        String s1 = "Hello";                    // литерал → пул
-        String s2 = "Hello";                    // тот же литерал → тот же объект в пуле
-        String s3 = new String("Hello");        // new → новый объект в куче
-        String s4 = new String("Hello");        // new → ещё один новый объект
-        String s5 = s3.intern();                // intern() → ссылка из пула
-        String s6 = "Hel" + "lo";              // конкатенация литералов → компилятор → пул
+        // Создание строк 6 разными способами
+        String s1 = "Hello";                    // Литерал
+        String s2 = "Hello";                    // Литерал
+        String s3 = new String("Hello");        // new
+        String s4 = new String("Hello");        // new
+        String s5 = s3.intern();                // intern()
+        String s6 = "Hel" + "lo";               // Конкатенация литералов
         String half = "Hel";
-        String s7 = half + "lo";               // конкатенация с переменной → рантайм → новый объект
-
-        // === Сравнения ===
+        String s7 = half + "lo";                // Конкатенация с переменной
 
         System.out.println("=== Сравнение строк ===\n");
 
-        // Прогноз: ____ (true/false). Причина: ____
-        System.out.println("s1 == s2      : " + (s1 == s2));
-        System.out.println("s1.equals(s2) : " + s1.equals(s2));
+        // s1 и s2
+        // Прогноз: true, true (оба ссылаются на один объект в String Pool)
+        System.out.println("s1 == s2: " + (s1 == s2));
+        System.out.println("s1.equals(s2): " + s1.equals(s2));
         System.out.println();
 
-        // TODO: запишите свой прогноз ПЕРЕД запуском
-        // Прогноз: ____ (true/false). Причина: ____
-        System.out.println("s1 == s3      : " + (s1 == s3));
-        System.out.println("s1.equals(s3) : " + s1.equals(s3));
+        // s1 и s3
+        // Прогноз: false, true (s3 — новый объект в heap, но equals сравнивает содержимое)
+        System.out.println("s1 == s3: " + (s1 == s3));
+        System.out.println("s1.equals(s3): " + s1.equals(s3));
         System.out.println();
 
-        // Прогноз: ____ (true/false). Причина: ____
-        System.out.println("s3 == s4      : " + (s3 == s4));
-        System.out.println("s3.equals(s4) : " + s3.equals(s4));
+        // s3 и s4
+        // Прогноз: false, true (два разных объекта в heap)
+        System.out.println("s3 == s4: " + (s3 == s4));
+        System.out.println("s3.equals(s4): " + s3.equals(s4));
         System.out.println();
 
-        // Прогноз: ____ (true/false). Причина: ____
-        System.out.println("s1 == s5      : " + (s1 == s5));
-        System.out.println("s1.equals(s5) : " + s1.equals(s5));
+        // s1 и s5
+        // Прогноз: true, true (s5.intern() вернул ссылку на объект из String Pool)
+        System.out.println("s1 == s5: " + (s1 == s5));
+        System.out.println("s1.equals(s5): " + s1.equals(s5));
         System.out.println();
 
-        // Прогноз: ____ (true/false). Причина: ____
-        System.out.println("s1 == s6      : " + (s1 == s6));
-        System.out.println("s1.equals(s6) : " + s1.equals(s6));
+        // s1 и s6
+        // Прогноз: true, true (компилятор вычисляет "Hel" + "lo" на этапе компиляции)
+        System.out.println("s1 == s6: " + (s1 == s6));
+        System.out.println("s1.equals(s6): " + s1.equals(s6));
         System.out.println();
 
-        // Прогноз: ____ (true/false). Причина: ____
-        System.out.println("s1 == s7      : " + (s1 == s7));
-        System.out.println("s1.equals(s7) : " + s1.equals(s7));
+        // s1 и s7
+        // Прогноз: false, true (s7 создаётся во время выполнения, новый объект)
+        System.out.println("s1 == s7: " + (s1 == s7));
+        System.out.println("s1.equals(s7): " + s1.equals(s7));
         System.out.println();
 
-        // === StringBuilder ===
-
-        System.out.println("=== StringBuilder ===\n");
+        // StringBuilder
         StringBuilder sb = new StringBuilder();
         sb.append('H').append('e').append('l').append('l').append('o');
         String s8 = sb.toString();
 
-        // Прогноз: ____ (true/false). Причина: ____
-        System.out.println("s1 == s8      : " + (s1 == s8));
-        System.out.println("s1.equals(s8) : " + s1.equals(s8));
+        System.out.println("=== StringBuilder ===");
+        System.out.println("s1 == s8: " + (s1 == s8));
+        System.out.println("s1.equals(s8): " + s1.equals(s8));
     }
 }

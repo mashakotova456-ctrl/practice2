@@ -14,60 +14,32 @@ import java.time.format.DateTimeFormatter;
  *   - static метод — принадлежит интерфейсу, вызывается через Loggable.getLogLevel().
  *   - private метод (Java 9+) — вспомогательный, используется внутри default-методов.
  */
+
 public interface Loggable {
 
-    /**
-     * Возвращает имя компонента. Каждый класс, реализующий Loggable,
-     * должен реализовать этот метод.
-     */
     String getComponentName();
 
-    /**
-     * Логирует сообщение.
-     *
-     * Формат: [14:30:15] [DatabaseService] Подключение установлено
-     *
-     * Подсказка:
-     * System.out.println("[" + formatTimestamp() + "] [" + getComponentName() + "] " + message);
-     */
     default void log(String message) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-
+        System.out.println("[" + formatTimestamp() + "] [" + getComponentName() + "] " + message);
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
-    /**
-     * Логирует сообщение об ошибке (с префиксом "ОШИБКА: ").
-     *
-     * Подсказка: вызовите log("ОШИБКА: " + message);
-     */
     default void logError(String message) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-
+        log("ОШИБКА: " + message);
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
-    /**
-     * Форматирует текущее время в формате "HH:mm:ss".
-     *
-     * Подсказка:
-     * return LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-     */
     private String formatTimestamp() {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return ""; // TODO: верните LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+        return LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
-    /**
-     * Возвращает уровень логирования. Статический метод интерфейса —
-     * вызывается через Loggable.getLogLevel().
-     *
-     * Подсказка: return "INFO";
-     */
     static String getLogLevel() {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return ""; // TODO: верните "INFO"
+        return "INFO";
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 }

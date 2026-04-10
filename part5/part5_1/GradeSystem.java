@@ -20,25 +20,10 @@ import java.util.*;
  *
  * Как запустить: нажмите ▶ рядом с main.
  */
+
 public class GradeSystem {
 
-    // === Enum Grade ===
-
-    /**
-     * Оценка с описанием и GPA-значением.
-     *
-     * Синтаксис enum с полями:
-     *
-     *     enum Grade {
-     *         A("Отлично", 4.0),
-     *         B("Хорошо", 3.0);
-     *         // ...
-     *         private final String description;
-     *         private final double gpaValue;
-     *         Grade(String description, double gpaValue) { ... }
-     *     }
-     */
-    enum Grade {
+    public enum Grade {
         A("Отлично", 4.0),
         B("Хорошо", 3.0),
         C("Удовлетворительно", 2.0),
@@ -49,124 +34,101 @@ public class GradeSystem {
         private final double gpaValue;
 
         Grade(String description, double gpaValue) {
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
             this.description = description;
             this.gpaValue = gpaValue;
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
 
-        /** Возвращает описание оценки (например, "Отлично"). */
         public String getDescription() {
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return null; // TODO: верните description
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+            return description;
         }
 
-        /** Возвращает GPA-значение (например, 4.0). */
         public double getGpaValue() {
-            // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return 0; // TODO: верните gpaValue
-            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+            return gpaValue;
         }
 
-        /**
-         * Возвращает true, если оценка является проходной (не D и не F).
-         *
-         * Подсказка: return this != F && this != D;
-         */
         public boolean isPassing() {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return false; // TODO: верните this != F && this != D
+            return this == A || this == B || this == C;
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
 
-        /**
-         * Преобразует числовую оценку (0–100) в Grade.
-         *
-         * Шкала: A ≥ 90, B ≥ 80, C ≥ 70, D ≥ 60, иначе F.
-         *
-         * Подсказка:
-         * if (score >= 90) return A; else if (score >= 80) return B; ...
-         */
         public static Grade fromScore(int score) {
             // ▼ ВАШ КОД ЗДЕСЬ ▼
-            return F; // TODO: if (score >= 90) return A; else if (score >= 80) return B; ...
+            if (score >= 90) return A;
+            if (score >= 80) return B;
+            if (score >= 70) return C;
+            if (score >= 60) return D;
+            return F;
             // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
     }
 
-    // === Record Student ===
-
-    /**
-     * Студент с именем и ID.
-     *
-     * Компактный конструктор:
-     *
-     *     record Student(String name, int id) {
-     *         Student {   // без скобок с параметрами!
-     *             if (name == null || name.isBlank()) throw new IllegalArgumentException("...");
-     *             if (id <= 0) throw new IllegalArgumentException("...");
-     *         }
-     *     }
-     */
-    record Student(String name, int id) {
-        Student {
-            // TODO: проверьте, что name не null и не пустое, id > 0
-            // Выбросите IllegalArgumentException при нарушении
+    public record Student(String name, int id) {
+        public Student {
+            // ▼ ВАШ КОД ЗДЕСЬ ▼
+            if (name == null || name.isEmpty()) {
+                throw new IllegalArgumentException("Имя не может быть пустым");
+            }
+            if (id <= 0) {
+                throw new IllegalArgumentException("ID должен быть положительным");
+            }
+            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
         }
     }
 
-    // === Метод main ===
-
     public static void main(String[] args) {
-
-        // TODO: Создайте 6–7 студентов и присвойте им числовые оценки
-        //   Student s1 = new Student("Анна", 1);
-        //   Grade g1 = Grade.fromScore(95);   // → A
-        //   ...
-
-        // TODO: Создайте EnumMap<Grade, List<Student>> и заполните его
-        //   var gradeMap = new EnumMap<Grade, List<Student>>(Grade.class);
-        //   gradeMap.computeIfAbsent(g1, k -> new ArrayList<>()).add(s1);
-
-        // TODO: Создайте EnumSet проходных оценок
-        //   var passingGrades = EnumSet.of(Grade.A, Grade.B, Grade.C);
-        //   или отфильтруйте: Arrays.stream(Grade.values()).filter(Grade::isPassing)...
-
-        // TODO: Выведите сводку для каждой оценки
-
-        // TODO: Подсчитайте средний GPA всех студентов
-
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
+        // Создаём студентов и их оценки
         Student[] students = {
-                new Student("Анна", 1),
+                new Student("Алиса", 1),
                 new Student("Борис", 2),
                 new Student("Вера", 3),
                 new Student("Глеб", 4),
-                new Student("Дмитрий", 5),
-                new Student("Елена", 6),
-                new Student("ваш имя???", 7)
+                new Student("Дарья", 5),
+                new Student("Егор", 6)
         };
-        int[] scores = {95, 82, 71, 58, 88, 90, 65};
-        var gradeMap = new EnumMap<Grade, List<Student>>(Grade.class);
-        double gpaSum = 0;
-        for (int i = 0; i < students.length; i++) {
-            Grade g = Grade.fromScore(scores[i]);
-            gradeMap.computeIfAbsent(g, k -> new ArrayList<>()).add(students[i]);
-            gpaSum += g.getGpaValue();
-        }
-        var passingGrades = EnumSet.of(Grade.A, Grade.B, Grade.C);
-        System.out.println("=== Студенты по оценкам (проходные: A, B, C) ===");
+
+        int[] scores = {95, 82, 76, 58, 88, 91};
+
+        // Создаём EnumMap для группировки
+        EnumMap<Grade, List<Student>> gradeMap = new EnumMap<>(Grade.class);
         for (Grade g : Grade.values()) {
-            List<Student> list = gradeMap.get(g);
-            if (list == null || list.isEmpty()) {
-                continue;
-            }
-            System.out.println(g + " (" + g.getDescription() + "): " +
-                    list.stream().map(Student::name).toList());
+            gradeMap.put(g, new ArrayList<>());
         }
-        System.out.println("\nПроходные категории EnumSet: " + passingGrades);
-        System.out.printf("Средний GPA по выборке: %.2f%n", gpaSum / students.length);
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+
+        // Группируем студентов по оценкам
+        double totalGPA = 0;
+        for (int i = 0; i < students.length; i++) {
+            Grade grade = Grade.fromScore(scores[i]);
+            gradeMap.get(grade).add(students[i]);
+            totalGPA += grade.getGpaValue();
+        }
+
+        // Выводим сводку
+        System.out.println("=== Распределение оценок ===\n");
+        for (Grade grade : Grade.values()) {
+            List<Student> list = gradeMap.get(grade);
+            if (!list.isEmpty()) {
+                System.out.printf("%s (%s): %d студент(ов)%n",
+                        grade, grade.getDescription(), list.size());
+                for (Student s : list) {
+                    System.out.println("  - " + s.name());
+                }
+                System.out.println();
+            }
+        }
+
+        // Используем EnumSet для проходных оценок
+        EnumSet<Grade> passingGrades = EnumSet.of(Grade.A, Grade.B, Grade.C);
+
+        System.out.println("=== Проходные оценки ===");
+        int passingCount = 0;
+        for (Grade g : passingGrades) {
+            passingCount += gradeMap.get(g).size();
+        }
+        System.out.println("Студентов с проходными оценками: " + passingCount);
+
+        // Средний GPA
+        double averageGPA = totalGPA / students.length;
+        System.out.printf("%nСредний GPA: %.2f%n", averageGPA);
     }
 }

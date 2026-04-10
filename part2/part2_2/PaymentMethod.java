@@ -14,20 +14,6 @@ package part2.part2_2;
  *     или non-sealed. Record автоматически final.
  */
 public sealed interface PaymentMethod permits CreditCard, BankTransfer, CryptoWallet {
-
-    /**
-     * Обрабатывает платёж и возвращает описание операции.
-     *
-     * @param amount сумма платежа
-     * @return строка-описание выполненного платежа
-     */
     String process(double amount);
-
-    /**
-     * Вычисляет комиссию за платёж.
-     *
-     * @param amount сумма платежа
-     * @return размер комиссии
-     */
     double fee(double amount);
 }

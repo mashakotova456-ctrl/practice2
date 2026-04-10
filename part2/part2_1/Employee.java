@@ -15,78 +15,60 @@ package part2.part2_1;
  *
  * Примечание: запускать нужно EmployeeBonus.java, а не этот файл.
  */
-public abstract class Employee {
-
-    /** Имя сотрудника. protected — доступно в подклассах. */
-    protected String name;
-
-    /** Базовый оклад. protected — доступно в подклассах. */
-    protected double baseSalary;
 
     /**
+     * Имя сотрудника. protected — доступно в подклассах.
+     */
+
+    /**
+     * Базовый оклад. protected — доступно в подклассах.
+     */
+    /**
      * Конструктор абстрактного класса.
-     *
+     * <p>
      * Подсказка: сохраните параметры в поля:
      * this.name = name; this.baseSalary = baseSalary;
-     *
+     * <p>
      * Важно: конструктор абстрактного класса вызывается из подклассов
      * через super(name, baseSalary).
      */
-    public Employee(String name, double baseSalary) {
-        // TODO: сохраните параметры в поля:
-        //   this.name = name;
-        //   this.baseSalary = baseSalary;
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
 
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+    public abstract class Employee {
+
+        protected String name;
+        protected double baseSalary;
+
+        public Employee(String name, double baseSalary) {
+            // ▼ ВАШ КОД ЗДЕСЬ ▼
+            this.name = name;
+            this.baseSalary = baseSalary;
+            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        }
+
+        public String getName() {
+            // ▼ ВАШ КОД ЗДЕСЬ ▼
+            return name;
+            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        }
+
+        public double getBaseSalary() {
+            // ▼ ВАШ КОД ЗДЕСЬ ▼
+            return baseSalary;
+            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        }
+
+        public abstract double calculateBonus();
+
+        public double totalCompensation() {
+            // ▼ ВАШ КОД ЗДЕСЬ ▼
+            return baseSalary + calculateBonus();
+            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        }
+
+        @Override
+        public String toString() {
+            // ▼ ВАШ КОД ЗДЕСЬ ▼
+            return name + " | Оклад: " + baseSalary + " | Бонус: " + calculateBonus() + " | Итого: " + totalCompensation();
+            // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+        }
     }
-
-    public String getName() {
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return null; // TODO: верните name
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
-    }
-
-    public double getBaseSalary() {
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: верните baseSalary
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
-    }
-
-    /**
-     * Вычисляет бонус сотрудника. Абстрактный метод — каждый подкласс
-     * определяет свою формулу.
-     *
-     * @return сумма бонуса
-     */
-    public abstract double calculateBonus();
-
-    /**
-     * Полная компенсация = оклад + бонус.
-     *
-     * Подсказка: return baseSalary + calculateBonus();
-     *
-     * Этот метод работает одинаково для всех подклассов благодаря полиморфизму:
-     * calculateBonus() вызовет версию конкретного подкласса.
-     *
-     * @return базовый оклад + бонус
-     */
-    public double totalCompensation() {
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: верните baseSalary + calculateBonus()
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
-    }
-
-    /**
-     * Формат: "Ольга | Оклад: 120000.0 | Бонус: 43000.0 | Итого: 163000.0"
-     *
-     * Подсказка:
-     * return name + " | Оклад: " + baseSalary + " | Бонус: " + calculateBonus() + " | Итого: " + totalCompensation();
-     */
-    @Override
-    public String toString() {
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return ""; // TODO: верните name + " | Оклад: " + baseSalary + " | Бонус: " + calculateBonus() + " | Итого: " + totalCompensation()
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
-    }
-}

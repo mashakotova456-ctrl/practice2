@@ -20,75 +20,73 @@ package part3.part3_2;
  *
  * Лучший студент: Вера (средний балл: 4.83)
  */
+
+
 public class GradeJournal {
 
-    // === Данные (уже заполнены) ===
-
-    static String[] names = {"Алиса", "Борис", "Вера", "Глеб"};
-
-    static int[][] grades = {
-        {5, 4, 5, 5, 3},       // Алиса
-        {3, 3, 4},             // Борис
-        {5, 5, 5, 5, 5, 4},   // Вера
-        {4, 3, 4, 5}           // Глеб
-    };
-
-    /**
-     * Вычисляет средний балл.
-     *
-     * Подсказка: просуммируйте все элементы, разделите на grades.length.
-     * Не забудьте привести к double перед делением.
-     */
     public static double average(int[] grades) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: просуммируйте все элементы, разделите на (double) grades.length
+        int sum = 0;
+        for (int grade : grades) {
+            sum += grade;
+        }
+        return (double) sum / grades.length;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
-    /**
-     * Находит максимальную оценку.
-     *
-     * Подсказка: начните с grades[0], пройдите циклом
-     * и обновляйте максимум.
-     */
     public static int max(int[] grades) {
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: начните с grades[0], пройдите циклом, обновляйте максимум
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
-    }
-
-    /**
-     * Находит минимальную оценку.
-     *
-     * Подсказка: начните с grades[0], пройдите циклом
-     * и обновляйте минимум (if (grades[i] < min) min = grades[i];).
-     */
-    public static int min(int[] grades) {
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return 0; // TODO: начните с grades[0], пройдите циклом, обновляйте минимум
-        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
-    }
-
-    // === Метод main ===
-
-    public static void main(String[] args) {
-        System.out.println("=== Журнал оценок ===");
-
-        // ▼ ВАШ КОД ЗДЕСЬ ▼
-        for (int i = 0; i < names.length; i++) {
-            System.out.printf("%-8s| Оценок: %d | Средний: %.2f | Мин: %d | Макс: %d%n",
-                    names[i], grades[i].length, average(grades[i]), min(grades[i]), max(grades[i]));
-        }
-        String bestName = names[0];
-        double bestAvg = average(grades[0]);
-        for (int i = 1; i < names.length; i++) {
-            double avg = average(grades[i]);
-            if (avg > bestAvg) {
-                bestAvg = avg;
-                bestName = names[i];
+        int max = grades[0];
+        for (int grade : grades) {
+            if (grade > max) {
+                max = grade;
             }
         }
-        System.out.printf("%nЛучший студент: %s (средний балл: %.2f)%n", bestName, bestAvg);
+        return max;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+    }
+
+    public static int min(int[] grades) {
+        // ▼ ВАШ КОД ЗДЕСЬ ▼
+        int min = grades[0];
+        for (int grade : grades) {
+            if (grade < min) {
+                min = grade;
+            }
+        }
+        return min;
+        // ▲ КОНЕЦ ВАШЕГО КОДА ▲
+    }
+
+    public static void main(String[] args) {
+        String[] names = {"Алиса", "Борис", "Вера", "Глеб"};
+
+        int[][] grades = {
+                {5, 4, 5, 5, 3},           // Алиса
+                {3, 3, 4},                  // Борис
+                {5, 5, 5, 5, 5, 4},        // Вера
+                {4, 3, 4, 5}                // Глеб
+        };
+
+        System.out.println("=== Журнал оценок ===");
+
+        double maxAverage = 0;
+        String bestStudent = "";
+
+        for (int i = 0; i < names.length; i++) {
+            double avg = average(grades[i]);
+            int min = min(grades[i]);
+            int max = max(grades[i]);
+
+            System.out.printf("%-7s | Оценок: %d | Средний: %.2f | Мин: %d | Макс: %d%n",
+                    names[i], grades[i].length, avg, min, max);
+
+            if (avg > maxAverage) {
+                maxAverage = avg;
+                bestStudent = names[i];
+            }
+        }
+
+        System.out.printf("%nЛучший студент: %s (средний балл: %.2f)%n", bestStudent, maxAverage);
     }
 }
